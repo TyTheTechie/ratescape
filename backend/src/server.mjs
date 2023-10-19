@@ -30,8 +30,14 @@ app.use(express.json());
 app.use(cors()); // Enable CORS for all routes
 
 // Routes
-app.use('/auth', authRoutes);
-app.use('/reviews', reviewRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/reviews', reviewRoutes);
+
+// Global error handler
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something went wrong!');
+});
 
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

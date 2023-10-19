@@ -70,7 +70,6 @@ router.post('/signup', limiter, async (req, res) => {
   }
 });
 
-
 // Login route
 router.post('/login', limiter, async (req, res) => {
   // Check if email exists
