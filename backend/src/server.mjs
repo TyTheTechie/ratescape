@@ -1,10 +1,22 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import http from 'http';
+import { Server } from 'socket.io';
 import authRoutes from './routes/auth.mjs';
 import reviewRoutes from './routes/reviews.mjs';
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+});
+
 const PORT = process.env.PORT || 3000;
 
 // Connect to MongoDB
@@ -21,6 +33,6 @@ app.use(cors()); // Enable CORS for all routes
 app.use('/auth', authRoutes);
 app.use('/reviews', reviewRoutes);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
