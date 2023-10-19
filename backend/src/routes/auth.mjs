@@ -10,24 +10,19 @@ import crypto from 'crypto';
 
 const router = express.Router();
 
-// CORS setup for specific domain
-const corsOptions = {
-  origin: 'https://ratescape.tythetechie.dev',
-  optionsSuccessStatus: 200
-};
-
-router.use(cors(corsOptions));
+// Enable CORS for all routes
+router.use(cors());
 
 // Rate limiter middleware
 const limiter = rateLimit({
-  windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 5, // limit each IP to 5 requests per windowMs
+  windowMs: 10 * 60 * 1000,
+  max: 5,
   message: "Too many signup/login attempts from this IP, please try again after 10 minutes."
 });
 
 // Setup Nodemailer transport
 let transporter = nodemailer.createTransport({
-    service: 'gmail', // or another email service
+    service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
@@ -37,17 +32,14 @@ let transporter = nodemailer.createTransport({
 // Signup route
 router.post('/signup', limiter, async (req, res) => {
   const { error } = signupValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error) return res.status(400).json({ status: 'error', message: error.details[0].message });
 
-  // Check if user already exists
   const emailExists = await User.findOne({ email: req.body.email });
-  if (emailExists) return res.status(400).send('Email already exists');
+  if (emailExists) return res.status(400).json({ status: 'error', message: 'Email already exists' });
 
-  // Hash the password
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-  // Create new user
   const user = new User({
     fullName: req.body.fullName,
     email: req.body.email,
@@ -56,12 +48,7 @@ router.post('/signup', limiter, async (req, res) => {
 
   try {
     const savedUser = await user.save();
-
-    // Generate a verification token
     const verificationToken = crypto.randomBytes(32).toString('hex');
-    // Store the token in the database associated with the user (you can set an expiration if desired)
-
-    // Send verification email
     let mailOptions = {
         from: process.env.EMAIL_USER,
         to: user.email,
@@ -77,11 +64,12 @@ router.post('/signup', limiter, async (req, res) => {
         }
     });
 
-    res.send({ user: savedUser._id });
+    res.json({ status: 'success', userId: savedUser._id });
   } catch (err) {
-    res.status(400).send(err);
+    res.status(400).json({ status: 'error', message: err.message });
   }
 });
+
 
 // Login route
 router.post('/login', limiter, async (req, res) => {
