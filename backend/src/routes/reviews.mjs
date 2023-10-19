@@ -1,5 +1,5 @@
 import express from 'express';
-import Review from '../models/review.ts';
+import Review from '../models/review.mjs';
 import authenticate from '../middleware/auth.mjs';
 
 const router = express.Router();

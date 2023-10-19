@@ -1,7 +1,7 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../models/user.ts';
+import User from '../models/user.mjs';
 import authenticate from '../middleware/auth.mjs';
 import sendEmail from '../utils/emailUtil.mjs';
 
