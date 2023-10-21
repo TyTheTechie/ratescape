@@ -1,11 +1,15 @@
 import express from 'express';
 import Review from '../models/review.mjs';
 import authenticate from '../middleware/auth.mjs';
+import reviewSchema from '../models/reviewValidation.mjs';
 
 const router = express.Router();
 
 // Post a review
 router.post('/', authenticate, async (req, res) => {
+  const { error } = reviewSchema.safeParse(req.body);
+  if (error) return res.status(400).send(error.message);
+
   const review = new Review({
     userId: req.user._id,
     product: req.body.product,
@@ -20,6 +24,7 @@ router.post('/', authenticate, async (req, res) => {
     res.status(400).send(err);
   }
 });
+
 
 // Get all reviews
 router.get('/', async (req, res) => {
