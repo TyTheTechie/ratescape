@@ -4,11 +4,14 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user.mjs';
 import authenticate from '../middleware/auth.mjs';
 import sendEmail from '../utils/emailUtil.mjs';
+import { signupValidation } from '../middleware/validation.mjs'; // Importing Zod validation
 
 const router = express.Router();
 
 // Signup route
 router.post('/signup', async (req, res) => {
+  const { error } = signupValidation(req.body);
+  if (error) return res.status(400).send(error.message);
   // Check if email already exists
   const emailExist = await User.findOne({ email: req.body.email });
   if (emailExist) return res.status(400).send('Email already exists');
