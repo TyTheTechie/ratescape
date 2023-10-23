@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
-const reviewSchema = z.object({
-  product: z.string().min(1).max(255).nonempty(),
-  rating: z.number().min(1).max(5),
-  text: z.string().min(1).max(1000).nonempty(),
-  url: z.string().url(),
-  user: z.string().uuid() 
+const reviewValidationSchema = z.object({
+  product: z.string().min(1).max(255).nonempty("Product name is required."),
+  rating: z.number().int().min(1).max(5),
+  text: z.string().min(1).max(1000).nonempty("Review text is required."),
+  url: z.string().url("Invalid product URL."),
+  user: z.string().uuid("Invalid user ID.")
 });
 
-export default reviewSchema;
+export default reviewValidationSchema;
