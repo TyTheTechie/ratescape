@@ -36,4 +36,15 @@ router.put('/reviews/disapprove/:reviewId', isAdmin, async (req, res) => {
     }
 });
 
+// Delete a review
+router.delete('/reviews/:reviewId', isAdmin, async (req, res) => {
+    try {
+        const review = await Review.findByIdAndDelete(req.params.reviewId);
+        if (!review) return res.status(404).send('Review not found');
+        res.send({ message: 'Review deleted successfully' });
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
+
 export default router;
