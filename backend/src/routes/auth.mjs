@@ -2,76 +2,56 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.mjs';
-import { signupValidation } from '../middleware/validation.mjs';
-import rateLimit from 'express-rate-limit';
-import cors from 'cors';
-import nodemailer from 'nodemailer';
-import crypto from 'crypto';
+import { z } from 'zod';
 
 const router = express.Router();
 
-// Enable CORS for all routes
-router.use(cors());
-
-// Rate limiter middleware
-const limiter = rateLimit({
-  windowMs: 10 * 60 * 1000,
-  max: 5,
-  message: "Too many signup/login attempts from this IP, please try again after 10 minutes."
+// Zod schemas for validation
+const signupSchema = z.object({
+  fullName: z.string(),
+  username: z.string(),
+  email: z.string().email(),
+  password: z.string().min(6)
 });
 
-// Setup Nodemailer transport
-let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string()
 });
 
 // Signup route
-router.post('/signup', limiter, async (req, res) => {
-  const { error } = signupValidation(req.body);
-  if (error) return res.status(400).json({ status: 'error', message: error.details[0].message });
-
-  const emailExists = await User.findOne({ email: req.body.email });
-  if (emailExists) return res.status(400).json({ status: 'error', message: 'Email already exists' });
-
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(req.body.password, salt);
-
-  const user = new User({
-    fullName: req.body.fullName,
-    email: req.body.email,
-    password: hashedPassword
-  });
-
+router.post('/signup', async (req, res) => {
   try {
-    const savedUser = await user.save();
-    const verificationToken = crypto.randomBytes(32).toString('hex');
-    let mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: user.email,
-        subject: 'Ratescape Email Verification',
-        text: `Click the link to verify your email: ${process.env.FRONTEND_URL}/verify/${verificationToken}`
-    };
+    const validatedData = signupSchema.parse(req.body);
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
+    const emailExist = await User.findOne({ email: validatedData.email });
+    if (emailExist) return res.status(400).json({ message: 'Email already exists' });
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(validatedData.password, salt);
+
+    const user = new User({
+      fullName: validatedData.fullName,
+      username: validatedData.username,
+      email: validatedData.email,
+      password: hashedPassword
     });
 
-    res.json({ status: 'success', userId: savedUser._id });
-  } catch (err) {
-    res.status(400).json({ status: 'error', message: err.message });
+    const savedUser = await user.save();
+    res.json({ user: savedUser._id });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      res.status(400).json({ message: error.errors[0].message });
+    } else {
+      res.status(500).json({ message: 'Server error' });
+    }
   }
 });
 
-// Login route
-router.post('/login', limiter, async (req, res) => {
+// Login route (assuming you have one)
+router.post('/login', async (req, res) => {
+  try {
+    const validatedData = loginSchema.parse(req.body);
   // Check if email exists
   const user = await User.findOne({ email: req.body.email });
   if (!user) return res.status(400).send('Email or password is wrong');

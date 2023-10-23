@@ -1,0 +1,24 @@
+# Node.js related
+node_modules/
+npm-debug.log
+
+# Backend specific
+backend/node_modules/
+backend/.env
+
+# Frontend specific
+frontend/node_modules/
+frontend/.env
+frontend/build/
+frontend/.cache/
+
+# Editor specific
+*.swp
+*.swo
+*.idea/
+.vscode/
+*.log
+
+# OS specific
+.DS_Store
+Thumbs.db
