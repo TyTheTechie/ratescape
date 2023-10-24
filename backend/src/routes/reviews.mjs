@@ -22,12 +22,15 @@ router.post('/', authenticate, async (req, res) => {
 
   try {
     const savedReview = await review.save();
+
+    // Emitting an event after saving the review
+    req.app.get('io').emit("newReview", savedReview);
+
     res.send(savedReview);
   } catch (err) {
     res.status(400).send(err);
   }
 });
-
 
 // Get all reviews
 router.get('/', async (req, res) => {
