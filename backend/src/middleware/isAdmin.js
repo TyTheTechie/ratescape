@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/user.mjs';
+import User from '../models/user.js';
 
 const isAdmin = async (req, res, next) => {
     const token = req.header('auth-token');

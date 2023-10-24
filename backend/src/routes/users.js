@@ -1,9 +1,9 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../models/user.mjs';
-import Review from '../models/review.mjs'; // Import the Review model
-import authenticate from '../middleware/auth.mjs';
+import User from '../models/user.js';
+import Review from '../models/review.js'; // Import the Review model
+import authenticate from '../middleware/auth.js';
 import sendEmail from '../utils/emailUtil.mjs';
 
 const router = express.Router();

@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import http from 'http';
 import { Server } from 'socket.io';
-import authRoutes from './routes/auth.mjs';
-import reviewRoutes from './routes/reviews.mjs';
+import authRoutes from './routes/auth.js';
+import reviewRoutes from './routes/reviews.js';
 
 const app = express();
 const server = http.createServer(app);

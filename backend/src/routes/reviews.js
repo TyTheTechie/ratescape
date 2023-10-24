@@ -1,7 +1,7 @@
 import express from 'express';
-import Review from '../models/review.mjs';
-import authenticate from '../middleware/auth.mjs';
-import reviewValidationSchema from '../models/reviewValidation.mjs';
+import Review from '../models/review.js';
+import authenticate from '../middleware/auth.js';
+import reviewValidationSchema from '../models/reviewValidation.js';
 
 const router = express.Router();
 

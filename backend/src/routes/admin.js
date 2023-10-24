@@ -1,6 +1,6 @@
 import express from 'express';
-import Review from '../models/review.mjs';
-import isAdmin from '../middleware/isAdmin.mjs';
+import Review from '../models/review.js';
+import isAdmin from '../middleware/isAdmin.js';
 
 const router = express.Router();
 
