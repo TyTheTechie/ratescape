@@ -26,16 +26,13 @@ Dive into a world of genuine product insights. RateScape is where consumers come
 
 cd ratescape/backend
 
-
 2. Install the treasures (packages):
 
 npm install
 
-
 3. Ignite the server:
 
 npm start
-
 
 ### Frontend
 
@@ -43,16 +40,13 @@ npm start
 
 cd ratescape/frontend
 
-
 2. Gather the required artifacts:
 
 npm install
 
-
 3. Awaken the React portal:
 
 npm start
-
 
 ## Database
 

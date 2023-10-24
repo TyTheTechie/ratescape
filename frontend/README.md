@@ -30,10 +30,8 @@ The frontend of RateScape is built using React (version 18) and styled with Tail
 - Search Functionality: Users can search for products by name (to be implemented).
 - Responsive Design: The frontend is designed to be responsive and mobile-friendly.
 
-
 ## Contributing
 
 If you'd like to contribute to the development of RateScape's frontend, please fork the repository, make your changes, and submit a pull request.
 
 ---
-
