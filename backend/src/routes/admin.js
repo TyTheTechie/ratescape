@@ -4,7 +4,7 @@ import isAdmin from '../middleware/isAdmin.js';
 
 const router = express.Router();
 
-// Get all reviews (for admin)
+// Get all reviews
 router.get('/reviews', isAdmin, async (req, res) => {
     try {
         const reviews = await Review.find();

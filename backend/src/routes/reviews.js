@@ -22,8 +22,6 @@ router.post('/', authenticate, async (req, res) => {
 
   try {
     const savedReview = await review.save();
-
-    // Emitting an event after saving the review
     req.app.get('io').emit("newReview", savedReview);
 
     res.send(savedReview);
@@ -53,7 +51,7 @@ router.get('/:reviewId', async (req, res) => {
   }
 });
 
-// Update a review (protected route)
+// Update a review 
 router.put('/:reviewId', authenticate, async (req, res) => {
   try {
     const updatedReview = await Review.findByIdAndUpdate(req.params.reviewId, req.body, { new: true });
@@ -64,7 +62,7 @@ router.put('/:reviewId', authenticate, async (req, res) => {
   }
 });
 
-// Delete a review (protected route)
+// Delete a review 
 router.delete('/:reviewId', authenticate, async (req, res) => {
   try {
     const removedReview = await Review.findByIdAndRemove(req.params.reviewId);

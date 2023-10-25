@@ -48,7 +48,7 @@ router.post('/signup', async (req, res) => {
     }
 });
 
-// Login route (assuming you have one)
+// Login route
 router.post('/login', async (req, res) => {
     try {
         const validatedData = loginSchema.parse(req.body);
