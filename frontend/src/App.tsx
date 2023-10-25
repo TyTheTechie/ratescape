@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import UserProfile from './pages/UserProfile';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
-import RegistrationPage from './pages/RegistrationPage'; // Import the RegistrationPage
+import RegistrationPage from './pages/RegistrationPage'; 
 import NavBar from './components/NavBar';
 import useWebSocket from './hooks/useWebSocket';
 
@@ -23,7 +23,7 @@ function App() {
                     <Route path="/" element={<HomePage isLoggedIn={isLoggedIn} />} />
                     <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn} />} />
                     <Route path="/profile" element={<UserProfile />} />
-                    <Route path="/register" element={<RegistrationPage />} /> {/* Add this line for the registration route */}
+                    <Route path="/register" element={<RegistrationPage />} />
                 </Routes>
             </div>
         </Router>
