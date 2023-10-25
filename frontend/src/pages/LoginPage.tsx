@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 
-const LoginPage: React.FC = () => {
+interface LoginPageProps {
+    setIsLoggedIn: (value: boolean) => void;
+}
+
+const LoginPage: React.FC<LoginPageProps> = ({ setIsLoggedIn }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -18,6 +22,7 @@ const LoginPage: React.FC = () => {
             const data = await response.json();
             if (data.token) {
                 localStorage.setItem('authToken', data.token);
+                setIsLoggedIn(true); // Update the login status
                 window.location.href = '/';
             }
         } catch (err) {
@@ -71,7 +76,7 @@ const LoginPage: React.FC = () => {
                         <input type="checkbox" className="mr-2" checked={rememberMe} onChange={() => setRememberMe(!rememberMe)} />
                         Remember Me
                     </label>
-                    <a href="#" className="text-blue-500 hover:underline">Forgot Password?</a>
+                    <button className="text-blue-500 hover:underline focus:outline-none">Forgot Password?</button>
                 </div>
                 <div className="text-center mb-3">
                     <button

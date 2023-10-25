@@ -19,8 +19,8 @@ function App() {
             <div className="bg-gray-100 min-h-screen">
                 <NavBar isLoggedIn={isLoggedIn} />
                 <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/" element={<HomePage isLoggedIn={isLoggedIn} />} />
+                    <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn} />} />
                     <Route path="/profile" element={<UserProfile />} />
                 </Routes>
             </div>
