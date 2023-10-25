@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import UserProfile from './pages/UserProfile';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
-import RegistrationPage  from './pages/RegistrationPage';
+import RegistrationPage from './pages/RegistrationPage';
 import { io } from 'socket.io-client';
 
 function App() {
@@ -29,12 +29,14 @@ function App() {
           <ul className="flex space-x-4 justify-center">
             <li><Link to="/" className="hover:underline">Home</Link></li>
             <li><Link to="/login" className="hover:underline">Login</Link></li>
+            <li><Link to="/register" className="hover:underline">Register</Link></li>
             {isLoggedIn && <li><Link to="/profile" className="hover:underline">Profile</Link></li>}
           </ul>
         </nav>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegistrationPage />} />
           <Route path="/profile" element={<UserProfile />} />
         </Routes>
       </div>
