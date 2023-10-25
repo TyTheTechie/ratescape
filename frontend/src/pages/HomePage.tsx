@@ -1,26 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-interface NavBarProps {
+interface HomePageProps {
     isLoggedIn: boolean;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ isLoggedIn }) => {
+const HomePage: React.FC<HomePageProps> = ({ isLoggedIn }) => {
     return (
-        <nav className="bg-purple-700 p-4 text-white shadow-md">
-            <div className="container mx-auto">
-                <div className="flex justify-between items-center">
-                    <div className="text-2xl font-bold">
-                        <Link to="/">RateScape</Link>
-                    </div>
-                    <ul className="flex space-x-4">
-                        {!isLoggedIn && <li><Link to="/login" className="hover:text-purple-300">Login</Link></li>}
-                        {isLoggedIn && <li><Link to="/profile" className="hover:text-purple-300">Profile</Link></li>}
-                    </ul>
+        <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+            <h1 className="text-4xl font-bold mb-4">Welcome to RateScape</h1>
+            <p className="text-xl mb-4">Your one-stop platform for rating everything!</p>
+            {!isLoggedIn && (
+                <div>
+                    <p className="mb-2">New here? <a href="/register" className="text-blue-500 hover:underline">Register</a></p>
+                    <p>Already a member? <a href="/login" className="text-blue-500 hover:underline">Login</a></p>
                 </div>
-            </div>
-        </nav>
+            )}
+        </div>
     );
 };
 
-export default NavBar;
+export default HomePage;
