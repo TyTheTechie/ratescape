@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { io } from "socket.io-client";
-import UserProfile from './UserProfile';
+import UserProfile from './pages/UserProfile';
 
 function App() {
   // Establish a WebSocket connection to listen for new reviews
