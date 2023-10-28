@@ -1,6 +1,12 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
+  fullName: {
+    type: String,
+    required: true,
+    min: 3,
+    max: 255
+  },
   username: {
     type: String,
     required: true,
@@ -27,7 +33,7 @@ const userSchema = new mongoose.Schema({
   isAdmin: {
     type: Boolean,
     default: false
-  }
+  },
 });
 
 export default mongoose.model('User', userSchema);
